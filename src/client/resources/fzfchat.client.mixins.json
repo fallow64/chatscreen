@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "dev.austinschneider.fzfchat.mixin.client",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"KeyboardOnKeyMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
