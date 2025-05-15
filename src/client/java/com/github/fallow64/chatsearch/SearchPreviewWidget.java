@@ -1,4 +1,4 @@
-package dev.austinschneider.fzfchat;
+package com.github.fallow64.chatsearch;
 
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.TextFieldWidget;

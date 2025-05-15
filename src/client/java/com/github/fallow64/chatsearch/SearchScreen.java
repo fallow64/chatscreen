@@ -1,5 +1,6 @@
-package dev.austinschneider.fzfchat;
+package com.github.fallow64.chatsearch;
 
+import com.github.fallow64.chatsearch.mixin.client.ChatScreenAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.ChatHud;
@@ -7,12 +8,10 @@ import net.minecraft.client.gui.navigation.GuiNavigation;
 import net.minecraft.client.gui.navigation.GuiNavigationPath;
 import net.minecraft.client.gui.navigation.NavigationDirection;
 import net.minecraft.client.gui.screen.ChatScreen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.ArrayListDeque;
 import org.lwjgl.glfw.GLFW;
 
-import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -24,13 +23,14 @@ import java.util.Iterator;
 public class SearchScreen extends ChatScreen {
     private final MinecraftClient client;
     /**
-     * The original message before the search started.
+     * The original message typed before Ctrl+R was pressed.
      */
     private final String originalMessage;
     /**
-     * The chat input widget.
+     * The chat input widget, initialized on init()
      */
-    private TextFieldWidget searchField;
+    private SearchFieldWidget searchField;
+
     /**
      * The currently selected match.
      */
@@ -44,16 +44,7 @@ public class SearchScreen extends ChatScreen {
         super("");
 
         this.client = MinecraftClient.getInstance();
-
-        try {
-            // Get the original input
-            Field originalChatField = ChatScreen.class.getDeclaredField("chatField");
-            originalChatField.setAccessible(true);
-            TextFieldWidget textFieldWidget = (TextFieldWidget) originalChatField.get(parent);
-            this.originalMessage = textFieldWidget.getText();
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        this.originalMessage = ((ChatScreenAccessor) parent).getOriginalChatText();
     }
 
     @Override
@@ -61,17 +52,11 @@ public class SearchScreen extends ChatScreen {
         super.init();
 
         // Replace the chat field with custom preview
-        this.chatField = new SearchPreviewWidget(this.client.advanceValidatingTextRenderer, 4, this.height - 12, this.width - 4, 12, this.originalMessage);
+        this.chatField = new SearchPreviewWidget(this.client.textRenderer, 4, this.height - 12, this.width - 4, 12, this.originalMessage);
 
         // Initialize the bck-i-search text
-        this.searchField = new TextFieldWidget(this.client.advanceValidatingTextRenderer, 4, this.height - 12 - 12, this.width - 4, 12, Text.translatable("chat.editBox"));
-        this.searchField.setChangedListener(ignored -> {
-            // Whenever the query is updated, redo search
-            this.search();
-        });
-        this.searchField.setMaxLength(256);
-        this.searchField.setDrawsBackground(false);
-        this.searchField.setText("");
+        this.searchField = new SearchFieldWidget(this.client.textRenderer, 4, this.height - 12 - 12, this.width - 4, 12, Text.translatable("chat.editBox"));
+        this.searchField.setChangedListener(this::onQueryChange);
         this.searchField.setFocusUnlocked(false);
         this.addSelectableChild(this.searchField);
     }
@@ -118,8 +103,7 @@ public class SearchScreen extends ChatScreen {
         String query = this.getQuery();
         boolean hasMatch = !(query == null || query.isEmpty() || currentMatch == null || currentMatch.isEmpty());
 
-        if (FzfChatClient.keyBinding.matchesKey(keyCode, scanCode) && modifiers == GLFW.GLFW_MOD_CONTROL) {
-            // If Ctrl+R is pressed
+        if (ChatSearchClient.keyBinding.matchesKey(keyCode, scanCode) && modifiers == GLFW.GLFW_MOD_CONTROL) {
 
             // Since the SearchChatScreen is already open, pressing it again will skip to the next result
             this.skipCount++;
@@ -128,7 +112,6 @@ public class SearchScreen extends ChatScreen {
 
             return true;
         } else if (hasMatch) {
-            // Match available
 
             if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
                 // Type it out for the user, but do not send
@@ -143,16 +126,13 @@ public class SearchScreen extends ChatScreen {
             } else {
                 return false;
             }
-        } else {
-            // No match available
 
-            if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
-                // Cancel search
-                this.client.setScreen(new ChatScreen(this.originalMessage));
-                return true;
-            } else {
-                return false;
-            }
+        } else if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+            // Cancel search
+            this.client.setScreen(new ChatScreen(this.originalMessage));
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -215,16 +195,15 @@ public class SearchScreen extends ChatScreen {
 
         this.chatField.setText(currentMatch);
 
-        FzfChat.LOGGER.info("QUERY: {}, MATCH: {}", query, currentMatch);
+        ChatSearch.LOGGER.trace("QUERY: {}, MATCH: {}", query, currentMatch);
     }
 
-    /**
-     * Gets the current query.
-     *
-     * @return the current query.
-     */
     private String getQuery() {
         return this.searchField.getText();
+    }
+
+    private void onQueryChange(String ignoredNewQuery) {
+        this.search();
     }
 
 }

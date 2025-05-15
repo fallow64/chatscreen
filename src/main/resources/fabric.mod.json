@@ -1,8 +1,8 @@
 {
 	"schemaVersion": 1,
-	"id": "fzfchat",
+	"id": "chatsearch",
 	"version": "${version}",
-	"name": "FzfChat",
+	"name": "ChatSearch",
 	"description": "This is an example description! Tell everyone what your mod is about!",
 	"authors": [
 		"Me!"
@@ -12,20 +12,20 @@
 		"sources": "https://github.com/FabricMC/fabric-example-mod"
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/fzfchat/icon.png",
+	"icon": "assets/chatsearch/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"dev.austinschneider.fzfchat.FzfChat"
+          "com.github.fallow64.chatsearch.ChatSearch"
 		],
 		"client": [
-			"dev.austinschneider.fzfchat.FzfChatClient"
+          "com.github.fallow64.chatsearch.ChatSearchClient"
 		]
 	},
 	"mixins": [
-		"fzfchat.mixins.json",
+		"chatsearch.mixins.json",
 		{
-			"config": "fzfchat.client.mixins.json",
+			"config": "chatsearch.client.mixins.json",
 			"environment": "client"
 		}
 	],

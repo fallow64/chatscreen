@@ -1,7 +1,7 @@
-package dev.austinschneider.fzfchat.mixin.client;
+package com.github.fallow64.chatsearch.mixin.client;
 
-import dev.austinschneider.fzfchat.FzfChatClient;
-import dev.austinschneider.fzfchat.SearchScreen;
+import com.github.fallow64.chatsearch.ChatSearchClient;
+import com.github.fallow64.chatsearch.SearchScreen;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
@@ -23,7 +23,7 @@ public class KeyboardOnKeyMixin {
 
         if (client.currentScreen instanceof ChatScreen chatScreen) {
             boolean isNormalChatScreen = !(chatScreen instanceof SearchScreen);
-            boolean wasSearchKeyPressed = FzfChatClient.keyBinding.matchesKey(key, scancode);
+            boolean wasSearchKeyPressed = ChatSearchClient.keyBinding.matchesKey(key, scancode);
             boolean wasCtrlHeld = modifiers == GLFW.GLFW_MOD_CONTROL;
 
             if (wasCtrlHeld && wasSearchKeyPressed && isNormalChatScreen) {

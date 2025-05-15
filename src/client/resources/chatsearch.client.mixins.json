@@ -1,8 +1,9 @@
 {
 	"required": true,
-	"package": "dev.austinschneider.fzfchat.mixin.client",
+	"package": "com.github.fallow64.chatsearch.mixin.client",
 	"compatibilityLevel": "JAVA_21",
 	"client": [
+		"ChatScreenAccessor",
 		"KeyboardOnKeyMixin"
 	],
 	"injectors": {
