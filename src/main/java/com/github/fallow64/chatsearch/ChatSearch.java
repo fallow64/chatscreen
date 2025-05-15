@@ -11,6 +11,6 @@ public class ChatSearch implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		LOGGER.info("FzfChat Initialized");
+		LOGGER.info("ChatSearch Initialized");
 	}
 }
