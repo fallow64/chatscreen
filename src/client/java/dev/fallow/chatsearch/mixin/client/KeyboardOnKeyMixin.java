@@ -1,7 +1,7 @@
-package com.github.fallow64.chatsearch.mixin.client;
+package dev.fallow.chatsearch.mixin.client;
 
-import com.github.fallow64.chatsearch.ChatSearchClient;
-import com.github.fallow64.chatsearch.SearchScreen;
+import dev.fallow.chatsearch.ChatSearchClient;
+import dev.fallow.chatsearch.SearchScreen;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;

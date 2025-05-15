@@ -1,4 +1,4 @@
-package com.github.fallow64.chatsearch.mixin.client;
+package dev.fallow.chatsearch.mixin.client;
 
 import net.minecraft.client.gui.screen.ChatScreen;
 import org.spongepowered.asm.mixin.Mixin;

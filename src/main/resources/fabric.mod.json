@@ -3,23 +3,23 @@
 	"id": "chatsearch",
 	"version": "${version}",
 	"name": "ChatSearch",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Search through your chat history with Ctrl+R!",
 	"authors": [
 		"fallow64"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/fallow64/chatsearch",
+		"sources": "https://github.com/fallow64/chatsearch"
 	},
 	"license": "MIT",
 	"icon": "assets/chatsearch/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-          "com.github.fallow64.chatsearch.ChatSearch"
+          "dev.fallow.chatsearch.ChatSearch"
 		],
 		"client": [
-          "com.github.fallow64.chatsearch.ChatSearchClient"
+          "dev.fallow.chatsearch.ChatSearchClient"
 		]
 	},
 	"mixins": [

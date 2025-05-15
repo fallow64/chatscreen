@@ -1,4 +1,4 @@
-package com.github.fallow64.chatsearch;
+package dev.fallow.chatsearch;
 
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.widget.TextFieldWidget;

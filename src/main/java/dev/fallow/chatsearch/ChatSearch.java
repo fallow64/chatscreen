@@ -1,4 +1,4 @@
-package com.github.fallow64.chatsearch;
+package dev.fallow.chatsearch;
 
 import net.fabricmc.api.ModInitializer;
 
